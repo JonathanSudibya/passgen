@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-var stdChars map[string][]byte
+var stdChars = make(map[string][]byte)
 
 func init() {
 	stdChars["CapsChars"] = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
