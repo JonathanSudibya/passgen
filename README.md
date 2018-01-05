@@ -1,4 +1,5 @@
-# passgen
+# passgen 
+[![Build Status](https://travis-ci.org/JonathanSudibya/passgen.svg?branch=master)](https://travis-ci.org/JonathanSudibya/passgen)
 
 Simple password (or string generator) library for golang
 
