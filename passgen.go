@@ -10,54 +10,52 @@ var stdChars = [][]byte{[]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), []byte("abcdefghij
 var bufPool = buffer.NewPool()
 
 // NewPassword will generate random string equal to length and options provided
-func NewPassword(length int, options []string) string {
+func NewPassword(length int, options ...string) string {
 	chars := bufPool.Get()
 	defer chars.Free()
 	if len(options) > 0 {
 		for _, v := range options {
 			switch v {
 			case "CapsChars":
-				chars.AppendBytes(stdChars[0])
+				chars.BS.Write(stdChars[0])
 			case "LowerChars":
-				chars.AppendBytes(stdChars[1])
+				chars.BS.Write(stdChars[1])
 			case "NumberChars":
-				chars.AppendBytes(stdChars[2])
+				chars.BS.Write(stdChars[2])
 			case "SymbolChars":
-				chars.AppendBytes(stdChars[3])
+				chars.BS.Write(stdChars[3])
 			}
 		}
 	} else {
 		for _, v := range stdChars {
-			chars.AppendBytes(v)
+			chars.BS.Write(v)
 		}
 	}
-	return randChar(length, chars.Bytes())
+	return randChar(length, chars.BS.Bytes())
 }
 
 func randChar(length int, chars []byte) string {
+	if len(chars) <= 0 {
+		return ""
+	}
+
 	newPword := bufPool.Get()
 	defer newPword.Free()
+
 	randomData := make([]byte, length+(length/4))
 
 	clen := bufPool.Get()
 	defer clen.Free()
-	clen.AppendByte(byte(len(chars)))
-
-	maxrb := bufPool.Get()
-	defer maxrb.Free()
-	maxrb.AppendByte(byte(256 - (256 % len(chars))))
+	clen.BS.WriteByte(byte(len(chars)))
 
 	i := 0
 	for {
 		rand.Read(randomData)
 		for _, c := range randomData {
-			if clen.Byte() >= maxrb.Byte() {
-				continue
-			}
-			newPword.AppendByte(chars[c%clen.Byte()])
+			newPword.BS.WriteByte(chars[c%clen.Byte()])
 			i++
 			if i == length {
-				return newPword.String()
+				return newPword.BS.String()
 			}
 		}
 	}

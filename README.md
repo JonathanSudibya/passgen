@@ -10,12 +10,12 @@ This project is inspired by cmiceli's [password-generator-go](https://github.com
 
 # Benchmark
 ```
-BenchmarkNewPasswordAllChars-4   	     1000000	      1279 ns/op	      80 B/op	       2 allocs/op
-BenchmarkNewPasswordCapsChars-4   	     1000000	      1276 ns/op	      80 B/op	       2 allocs/op
-BenchmarkNewPasswordLowerChars-4   	     1000000	      1296 ns/op	      80 B/op	       2 allocs/op
-BenchmarkNewPasswordNumberChars-4   	 1000000	      1263 ns/op	      80 B/op	       2 allocs/op
-BenchmarkNewPasswordSymbolChars-4   	 1000000	      1240 ns/op	      80 B/op	       2 allocs/op
-BenchmarkNewPasswordMixedChars-4   	     1000000	      1278 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordAllChars-4   	 2000000	       955 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordCapsChars-4   	 2000000	       909 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordLowerChars-4   	 2000000	       919 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordNumberChars-4   	 2000000	       954 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordSymbolChars-4   	 2000000	       942 ns/op	      80 B/op	       2 allocs/op
+BenchmarkNewPasswordMixedChars-4   	 2000000	       950 ns/op	      80 B/op	       2 allocs/op
 ```
 
 # LICENSE
