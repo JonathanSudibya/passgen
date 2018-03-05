@@ -2,53 +2,62 @@ package passgen
 
 import (
 	"crypto/rand"
-	"io"
+
+	"github.com/jonathansudibya/passgen/buffer"
 )
 
-var stdChars = make(map[string][]byte)
-
-func init() {
-	stdChars["CapsChars"] = []byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-	stdChars["LowerChars"] = []byte("abcdefghijklmnopqrstuvwxyz")
-	stdChars["NumberChars"] = []byte("0123456789")
-	stdChars["SymbolChars"] = []byte("!@#$%^&*()-_=+,.?/:;{}[]`~")
-}
+var stdChars = [][]byte{[]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), []byte("abcdefghijklmnopqrstuvwxyz"), []byte("0123456789"), []byte("!@#$%^&*()-_=+,.?/:;{}[]`~")}
+var bufPool = buffer.NewPool()
 
 // NewPassword will generate random string equal to length and options provided
 func NewPassword(length int, options []string) string {
-	chars := make([]byte, 0)
+	chars := bufPool.Get()
+	defer chars.Free()
 	if len(options) > 0 {
 		for _, v := range options {
-			if stdChars[v] != nil {
-				chars = append(chars, stdChars[v]...)
+			switch v {
+			case "CapsChars":
+				chars.AppendBytes(stdChars[0])
+			case "LowerChars":
+				chars.AppendBytes(stdChars[1])
+			case "NumberChars":
+				chars.AppendBytes(stdChars[2])
+			case "SymbolChars":
+				chars.AppendBytes(stdChars[3])
 			}
 		}
 	} else {
 		for _, v := range stdChars {
-			chars = append(chars, v...)
+			chars.AppendBytes(v)
 		}
 	}
-	return randChar(length, chars)
+	return randChar(length, chars.Bytes())
 }
 
 func randChar(length int, chars []byte) string {
-	newPword := make([]byte, length)
+	newPword := bufPool.Get()
+	defer newPword.Free()
 	randomData := make([]byte, length+(length/4))
-	clen := byte(len(chars))
-	maxrb := byte(256 - (256 % len(chars)))
+
+	clen := bufPool.Get()
+	defer clen.Free()
+	clen.AppendByte(byte(len(chars)))
+
+	maxrb := bufPool.Get()
+	defer maxrb.Free()
+	maxrb.AppendByte(byte(256 - (256 % len(chars))))
+
 	i := 0
 	for {
-		if _, err := io.ReadFull(rand.Reader, randomData); err != nil {
-			panic(err)
-		}
+		rand.Read(randomData)
 		for _, c := range randomData {
-			if c >= maxrb {
+			if clen.Byte() >= maxrb.Byte() {
 				continue
 			}
-			newPword[i] = chars[c%clen]
+			newPword.AppendByte(chars[c%clen.Byte()])
 			i++
 			if i == length {
-				return string(newPword)
+				return newPword.String()
 			}
 		}
 	}

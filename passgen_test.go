@@ -14,13 +14,23 @@ func TestNewPasswordEmpty(t *testing.T) {
 	NewPassword(32, options)
 }
 
-func TestNewPasswordNotEmpty(t *testing.T) {
+func TestNewPasswordCapsLower(t *testing.T) {
 	defer func() {
 		if r := recover(); r != nil {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	options := []string{"CapChars", "LowerChars"}
+	options := []string{"CapsChars", "LowerChars"}
+	NewPassword(32, options)
+}
+
+func TestNewPasswordNumSymbol(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("The code did panic. %s", r)
+		}
+	}()
+	options := []string{"NumberChars", "SymbolChars"}
 	NewPassword(32, options)
 }
 
