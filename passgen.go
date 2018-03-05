@@ -3,7 +3,7 @@ package passgen
 import (
 	"crypto/rand"
 
-	"github.com/jonathansudibya/passgen/buffer"
+	"github.com/JonathanSudibya/passgen/buffer"
 )
 
 var stdChars = [][]byte{[]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), []byte("abcdefghijklmnopqrstuvwxyz"), []byte("0123456789"), []byte("!@#$%^&*()-_=+,.?/:;{}[]`~")}
