@@ -52,7 +52,7 @@ func randChar(length int, chars []byte) string {
 	for {
 		rand.Read(randomData)
 		for _, c := range randomData {
-			newPword.BS.WriteByte(chars[c%clen.Byte()])
+			newPword.BS.WriteByte(chars[c%clen.BS.Bytes()[0]])
 			i++
 			if i == length {
 				return newPword.BS.String()
