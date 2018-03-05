@@ -2,6 +2,7 @@ package passgen
 
 import (
 	"crypto/rand"
+	"fmt"
 
 	"github.com/JonathanSudibya/passgen/buffer"
 )
@@ -24,6 +25,8 @@ func NewPassword(length int, options ...string) string {
 				chars.BS.Write(stdChars[2])
 			case "SymbolChars":
 				chars.BS.Write(stdChars[3])
+			default:
+				panic(fmt.Errorf("character group not found"))
 			}
 		}
 	} else {
@@ -35,10 +38,6 @@ func NewPassword(length int, options ...string) string {
 }
 
 func randChar(length int, chars []byte) string {
-	if len(chars) <= 0 {
-		return ""
-	}
-
 	newPword := bufPool.Get()
 	defer newPword.Free()
 

@@ -1,6 +1,7 @@
 # passgen 
 [![Build Status](https://travis-ci.org/JonathanSudibya/passgen.svg?branch=master)](https://travis-ci.org/JonathanSudibya/passgen)
 [![codecov](https://codecov.io/gh/JonathanSudibya/passgen/branch/master/graph/badge.svg)](https://codecov.io/gh/JonathanSudibya/passgen)
+[![Go Report Card](https://goreportcard.com/badge/github.com/JonathanSudibya/passgen)](https://goreportcard.com/report/github.com/JonathanSudibya/passgen)
 
 Simple password (or string generator) library for golang
 

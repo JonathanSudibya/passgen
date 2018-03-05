@@ -24,8 +24,8 @@ func TestNewPasswordCapsLower(t *testing.T) {
 
 func TestNewPasswordUndefined(t *testing.T) {
 	defer func() {
-		if r := recover(); r != nil {
-			t.Errorf("The code did panic. %s", r)
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic. %s", r)
 		}
 	}()
 	NewPassword(32, "CapChars", "LowerCharizard")
