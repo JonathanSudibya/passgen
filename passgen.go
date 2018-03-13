@@ -34,29 +34,22 @@ func NewPassword(length int, options ...string) string {
 			chars.Write(v)
 		}
 	}
-	return randChar(length, chars.Bytes())
+	return string(randChar(length, chars))
 }
 
-func randChar(length int, chars []byte) string {
+func randChar(length int, chars *buffer.Buffer) []byte {
 	newPword := bufPool.Get()
 	defer newPword.Free()
 
 	randomData := bufPool.Get()
 	defer randomData.Free()
 
-	clen := bufPool.Get()
-	defer clen.Free()
-	clen.WriteByte(byte(len(chars)))
+	clen := byte(chars.Len())
 
-	i := 0
 	randomData.Grow(length)
 	rand.Read(randomData.BS)
 	for _, c := range randomData.Bytes() {
-		newPword.WriteByte(chars[c%clen.Bytes()[0]])
-		i++
-		if i == length {
-			return newPword.String()
-		}
+		newPword.WriteByte(chars.BS[c%clen])
 	}
-	return ""
+	return newPword.Bytes()
 }

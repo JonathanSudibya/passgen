@@ -10,16 +10,14 @@ Simple password (or string generator) library for golang
 This project is inspired by cmiceli's [password-generator-go](https://github.com/cmiceli/password-generator-go)
 
 # Benchmark
+This benchmark generates string with 32 characters long.
 ```
-goos: windows
-goarch: amd64
-pkg: github.com/jonathansudibya/passgen
-BenchmarkNewPasswordAllChars-4           2000000               808 ns/op               0 B/op          0 allocs/op
-BenchmarkNewPasswordCapsChars-4          2000000               795 ns/op               0 B/op          0 allocs/op
-BenchmarkNewPasswordLowerChars-4         2000000               786 ns/op               0 B/op          0 allocs/op
-BenchmarkNewPasswordNumberChars-4        2000000               795 ns/op               0 B/op          0 allocs/op
-BenchmarkNewPasswordSymbolChars-4        2000000               831 ns/op               0 B/op          0 allocs/op
-BenchmarkNewPasswordMixedChars-4         2000000               822 ns/op               0 B/op          0 allocs/op
+BenchmarkNewPasswordAllChars-4           2000000               749 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordCapsChars-4          2000000               731 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordLowerChars-4         2000000               741 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordNumberChars-4        2000000               737 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordSymbolChars-4        2000000               739 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordMixedChars-4         2000000               760 ns/op              32 B/op          1 allocs/op
 ```
 
 # LICENSE

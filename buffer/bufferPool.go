@@ -53,8 +53,12 @@ func (b *Buffer) Grow(n int) {
 func (b *Buffer) Write(bs []byte) (int, error) {
 	m := b.len
 	n := m + len(bs)
-	b.Grow(n)
+	b.Grow(len(bs))
 	return copy(b.BS[m:n], bs), nil
+}
+
+func (b *Buffer) Len() int {
+	return b.len
 }
 
 // WriteByte will write a Byte
@@ -75,7 +79,7 @@ func (b *Buffer) Bytes() []byte {
 }
 
 func (b *Buffer) String() string {
-	return string(b.BS[:b.len])
+	return string(b.BS)
 }
 
 // Free will Release Buffer to pool
