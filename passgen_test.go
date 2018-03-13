@@ -10,7 +10,16 @@ func TestNewPasswordEmpty(t *testing.T) {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	NewPassword(32)
+	NewPassword(0)
+}
+
+func TestNewPasswordAllType(t *testing.T) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Errorf("The code did panic. %s", r)
+		}
+	}()
+	NewPassword(0)
 }
 
 func TestNewPasswordCapsLower(t *testing.T) {

@@ -18,44 +18,45 @@ func NewPassword(length int, options ...string) string {
 		for _, v := range options {
 			switch v {
 			case "CapsChars":
-				chars.BS.Write(stdChars[0])
+				chars.Write(stdChars[0])
 			case "LowerChars":
-				chars.BS.Write(stdChars[1])
+				chars.Write(stdChars[1])
 			case "NumberChars":
-				chars.BS.Write(stdChars[2])
+				chars.Write(stdChars[2])
 			case "SymbolChars":
-				chars.BS.Write(stdChars[3])
+				chars.Write(stdChars[3])
 			default:
 				panic(fmt.Errorf("character group not found"))
 			}
 		}
 	} else {
 		for _, v := range stdChars {
-			chars.BS.Write(v)
+			chars.Write(v)
 		}
 	}
-	return randChar(length, chars.BS.Bytes())
+	return randChar(length, chars.Bytes())
 }
 
 func randChar(length int, chars []byte) string {
 	newPword := bufPool.Get()
 	defer newPword.Free()
 
-	randomData := make([]byte, length+(length/4))
+	randomData := bufPool.Get()
+	defer randomData.Free()
 
 	clen := bufPool.Get()
 	defer clen.Free()
-	clen.BS.WriteByte(byte(len(chars)))
+	clen.WriteByte(byte(len(chars)))
 
 	i := 0
-	for {
-		rand.Read(randomData)
-		for _, c := range randomData {
-			newPword.BS.WriteByte(chars[c%clen.BS.Bytes()[0]])
-			i++
-			if i == length {
-				return newPword.BS.String()
-			}
+	randomData.Grow(length)
+	rand.Read(randomData.BS)
+	for _, c := range randomData.Bytes() {
+		newPword.WriteByte(chars[c%clen.Bytes()[0]])
+		i++
+		if i == length {
+			return newPword.String()
 		}
 	}
+	return ""
 }
