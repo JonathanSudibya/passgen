@@ -1,6 +1,7 @@
 package passgen
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -10,7 +11,7 @@ func TestNewPasswordEmpty(t *testing.T) {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	NewPassword(0)
+	t.Log(NewPassword(0))
 }
 
 func TestNewPasswordAllType(t *testing.T) {
@@ -19,7 +20,7 @@ func TestNewPasswordAllType(t *testing.T) {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	NewPassword(0)
+	t.Log(NewPassword(32))
 }
 
 func TestNewPasswordCapsLower(t *testing.T) {
@@ -28,7 +29,7 @@ func TestNewPasswordCapsLower(t *testing.T) {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	NewPassword(32, "CapsChars", "LowerChars")
+	t.Log(NewPassword(32, "CapsChars", "LowerChars"))
 }
 
 func TestNewPasswordUndefined(t *testing.T) {
@@ -37,7 +38,7 @@ func TestNewPasswordUndefined(t *testing.T) {
 			t.Errorf("The code did not panic. %s", r)
 		}
 	}()
-	NewPassword(32, "CapChars", "LowerCharizard")
+	t.Log(NewPassword(32, "CapChars", "LowerCharizard"))
 }
 
 func TestNewPasswordNumSymbol(t *testing.T) {
@@ -46,7 +47,18 @@ func TestNewPasswordNumSymbol(t *testing.T) {
 			t.Errorf("The code did panic. %s", r)
 		}
 	}()
-	NewPassword(32, "NumberChars", "SymbolChars")
+	t.Log(NewPassword(32, "NumberChars", "SymbolChars"))
+}
+
+func BenchmarkNewPasswordAllCharsIterated(b *testing.B) {
+	benchmarks := []int{2, 8, 32, 128, 1024}
+	for _, bm := range benchmarks {
+		b.Run(fmt.Sprintf("allchar-%d", bm), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				NewPassword(bm)
+			}
+		})
+	}
 }
 
 func BenchmarkNewPasswordAllChars(b *testing.B) {

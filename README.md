@@ -12,12 +12,17 @@ This project is inspired by cmiceli's [password-generator-go](https://github.com
 # Benchmark
 This benchmark generates string with 32 characters long.
 ```
-BenchmarkNewPasswordAllChars-4           2000000               749 ns/op              32 B/op          1 allocs/op
-BenchmarkNewPasswordCapsChars-4          2000000               731 ns/op              32 B/op          1 allocs/op
-BenchmarkNewPasswordLowerChars-4         2000000               741 ns/op              32 B/op          1 allocs/op
-BenchmarkNewPasswordNumberChars-4        2000000               737 ns/op              32 B/op          1 allocs/op
-BenchmarkNewPasswordSymbolChars-4        2000000               739 ns/op              32 B/op          1 allocs/op
-BenchmarkNewPasswordMixedChars-4         2000000               760 ns/op              32 B/op          1 allocs/op
+BenchmarkNewPasswordAllCharsIterated/allchar-2-2         	 5000000	       300 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordAllCharsIterated/allchar-8-2         	 3000000	       353 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordAllCharsIterated/allchar-32-2        	 3000000	       506 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordAllCharsIterated/allchar-128-2       	 1000000	      1130 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordAllCharsIterated/allchar-1024-2      	  200000	      6569 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordAllChars-2                           	 3000000	       501 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordCapsChars-2                          	 3000000	       494 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordLowerChars-2                         	 3000000	       503 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordNumberChars-2                        	 3000000	       488 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordSymbolChars-2                        	 3000000	       499 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewPasswordMixedChars-2                         	 3000000	       507 ns/op	       0 B/op	       0 allocs/op
 ```
 
 # LICENSE

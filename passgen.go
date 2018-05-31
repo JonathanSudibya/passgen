@@ -1,14 +1,35 @@
 package passgen
 
 import (
-	"crypto/rand"
 	"fmt"
+	"math/rand"
+	"reflect"
+	"time"
+	"unsafe"
 
 	"github.com/JonathanSudibya/passgen/buffer"
 )
 
-var stdChars = [][]byte{[]byte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), []byte("abcdefghijklmnopqrstuvwxyz"), []byte("0123456789"), []byte("!@#$%^&*()-_=+,.?/:;{}[]`~")}
+func byteToString(bytes []byte) string {
+	hdr := *(*reflect.SliceHeader)(unsafe.Pointer(&bytes))
+	return *(*string)(unsafe.Pointer(&reflect.StringHeader{
+		Data: hdr.Data,
+		Len:  hdr.Len,
+	}))
+}
+
+func stringToByte(str string) []byte {
+	hdr := *(*reflect.StringHeader)(unsafe.Pointer(&str))
+	return *(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
+		Data: hdr.Data,
+		Len:  hdr.Len,
+		Cap:  hdr.Len,
+	}))
+}
+
+var stdChars = [][]byte{stringToByte("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), stringToByte("abcdefghijklmnopqrstuvwxyz"), stringToByte("0123456789"), stringToByte("!@#$%^&*()-_=+,.?/:;{}[]`~")}
 var bufPool = buffer.NewPool()
+var r = rand.New(rand.NewSource(time.Now().UnixNano()))
 
 // NewPassword will generate random string equal to length and options provided
 func NewPassword(length int, options ...string) string {
@@ -34,7 +55,7 @@ func NewPassword(length int, options ...string) string {
 			chars.Write(v)
 		}
 	}
-	return string(randChar(length, chars))
+	return byteToString(randChar(length, chars))
 }
 
 func randChar(length int, chars *buffer.Buffer) []byte {
@@ -47,7 +68,7 @@ func randChar(length int, chars *buffer.Buffer) []byte {
 	clen := byte(chars.Len())
 
 	randomData.Grow(length)
-	rand.Read(randomData.BS)
+	r.Read(randomData.BS)
 	for _, c := range randomData.Bytes() {
 		newPword.WriteByte(chars.BS[c%clen])
 	}
