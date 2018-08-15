@@ -7,7 +7,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/JonathanSudibya/passgen/buffer"
+	"github.com/jonathansudibya/passgen/buffer"
 )
 
 func byteToString(bytes []byte) string {
